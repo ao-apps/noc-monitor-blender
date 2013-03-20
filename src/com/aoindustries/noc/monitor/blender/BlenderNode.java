@@ -6,107 +6,101 @@
 package com.aoindustries.noc.monitor.blender;
 
 import com.aoindustries.noc.monitor.common.AlertLevel;
-import com.aoindustries.noc.monitor.common.SingleResultNode;
 import com.aoindustries.noc.monitor.common.Node;
-import com.aoindustries.noc.monitor.common.RootNode;
-import com.aoindustries.noc.monitor.common.TableMultiResultNode;
-import com.aoindustries.noc.monitor.common.TableResultNode;
+import com.aoindustries.util.WrappedException;
 import java.rmi.RemoteException;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
+import java.util.UUID;
 
 /**
  * @author  AO Industries, Inc.
  */
 public class BlenderNode implements Node {
 
-    final private Collection<Node> wrapped;
+    final BlenderMonitor monitor;
     final private Node wrapped;
+    final private UUID uuid;
 
-    BlenderNode(Node wrapped) {
-        BlenderMonitor.checkNoswing();
+    protected BlenderNode(BlenderMonitor monitor, Node wrapped) {
+        this.monitor = monitor;
         this.wrapped = wrapped;
+        this.uuid    = UUID.randomUUID();
     }
 
     @Override
-    public Node getParent() throws RemoteException {
-        BlenderMonitor.checkNoswing();
-        return new BlenderNode(wrapped.getParent());
+    public BlenderNode getParent() throws RemoteException {
+        Node wrappedParent = wrapped.getParent();
+        return monitor.wrapNode(wrappedParent, wrappedParent.getUuid());
     }
 
     @Override
-    public List<? extends Node> getChildren() throws RemoteException {
-        BlenderMonitor.checkNoswing();
+    public List<? extends BlenderNode> getChildren() throws RemoteException {
         List<? extends Node> children = wrapped.getChildren();
         // Wrap
-        List<Node> localWrapped = new ArrayList<Node>(children.size());
+        List<BlenderNode> localWrapped = new ArrayList<BlenderNode>(children.size());
         for(Node child : children) {
-            localWrapped.add(wrap(child));
+            localWrapped.add(monitor.wrapNode(child, child.getUuid()));
         }
         return Collections.unmodifiableList(localWrapped);
     }
 
-    @SuppressWarnings("unchecked")
-    static Node wrap(Node node) {
-        if(node instanceof SingleResultNode) return new BlenderSingleResultNode((SingleResultNode)node);
-        if(node instanceof TableResultNode) return new BlenderTableResultNode((TableResultNode)node);
-        if(node instanceof TableMultiResultNode) return new BlenderTableMultiResultNode((TableMultiResultNode)node);
-        if(node instanceof RootNode) return new BlenderRootNode((RootNode)node);
-        return new BlenderNode(node);
-    }
-
     @Override
     public AlertLevel getAlertLevel() throws RemoteException {
-        BlenderMonitor.checkNoswing();
         return wrapped.getAlertLevel();
     }
 
     @Override
     public String getAlertMessage() throws RemoteException {
-        BlenderMonitor.checkNoswing();
         return wrapped.getAlertMessage();
     }
 
     @Override
     public boolean getAllowsChildren() throws RemoteException {
-        BlenderMonitor.checkNoswing();
         return wrapped.getAllowsChildren();
     }
 
     @Override
     public String getId() throws RemoteException {
-        BlenderMonitor.checkNoswing();
         return wrapped.getId();
     }
 
     @Override
     public String getLabel() throws RemoteException {
-        BlenderMonitor.checkNoswing();
         return wrapped.getLabel();
     }
-    
+
+    /**
+     * After wrapping, the wrapped node gets a new UUID.
+     */
     @Override
-    public boolean equals(Object O) {
-        if(O==null) return false;
-        if(!(O instanceof Node)) return false;
+    public UUID getUuid() throws RemoteException {
+        return uuid;
+    }
 
-        // Unwrap this
-        Node thisNode = this;
-        while(thisNode instanceof BlenderNode) thisNode = ((BlenderNode)thisNode).wrapped;
-
-        // Unwrap other
-        Node otherNode = (Node)O;
-        while(otherNode instanceof BlenderNode) otherNode = ((BlenderNode)otherNode).wrapped;
-
-        // Check equals
-        return thisNode.equals(otherNode);
+    @Override
+    public boolean equals(Object obj) {
+        if(!(obj instanceof Node)) return false;
+        Node other = (Node)obj;
+        try {
+            return uuid.equals(other.getUuid());
+        } catch(RemoteException err) {
+            throw new WrappedException(err);
+        }
     }
 
     @Override
     public int hashCode() {
-        BlenderMonitor.checkNoswing();
-        return wrapped.hashCode();
+        return uuid.hashCode();
+    }
+
+    @Override
+    public String toString() {
+        try {
+            return getLabel();
+        } catch(RemoteException err) {
+            throw new WrappedException(err);
+        }
     }
 }

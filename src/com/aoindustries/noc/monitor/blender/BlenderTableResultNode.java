@@ -9,36 +9,31 @@ import com.aoindustries.noc.monitor.common.TableResult;
 import com.aoindustries.noc.monitor.common.TableResultListener;
 import com.aoindustries.noc.monitor.common.TableResultNode;
 import java.rmi.RemoteException;
-import java.util.Collection;
 
 /**
  * @author  AO Industries, Inc.
  */
 public class BlenderTableResultNode extends BlenderNode implements TableResultNode {
 
-    final private Collection<TableResultNode> wrapped;
+    final private TableResultNode wrapped;
 
-    BlenderTableResultNode(Collection<TableResultNode> wrapped) {
-        super(wrapped);
-        BlenderMonitor.checkNoswing();
+    protected BlenderTableResultNode(BlenderMonitor monitor, TableResultNode wrapped) {
+        super(monitor, wrapped);
         this.wrapped = wrapped;
     }
 
     @Override
     public void addTableResultListener(TableResultListener tableResultListener) throws RemoteException {
-        BlenderMonitor.checkNoswing();
-        wrapped.addTableResultListener(tableResultListener);
+        wrapped.addTableResultListener(monitor.wrapTableResultListener(tableResultListener));
     }
 
     @Override
     public void removeTableResultListener(TableResultListener tableResultListener) throws RemoteException {
-        BlenderMonitor.checkNoswing();
-        wrapped.removeTableResultListener(tableResultListener);
+        wrapped.removeTableResultListener(monitor.wrapTableResultListener(tableResultListener));
     }
 
     @Override
     public TableResult getLastResult() throws RemoteException {
-        BlenderMonitor.checkNoswing();
         return wrapped.getLastResult();
     }
 }

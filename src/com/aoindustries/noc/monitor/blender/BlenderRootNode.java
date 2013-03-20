@@ -10,6 +10,9 @@ import com.aoindustries.noc.monitor.common.NodeSnapshot;
 import com.aoindustries.noc.monitor.common.RootNode;
 import com.aoindustries.noc.monitor.common.TreeListener;
 import java.rmi.RemoteException;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 import java.util.SortedSet;
 
 /**
@@ -19,43 +22,59 @@ public class BlenderRootNode extends BlenderNode implements RootNode {
 
     final private RootNode wrapped;
 
-    BlenderRootNode(RootNode wrapped) {
-        super(wrapped);
-        BlenderMonitor.checkNoswing();
+    protected BlenderRootNode(BlenderMonitor monitor, RootNode wrapped) {
+        super(monitor, wrapped);
         this.wrapped = wrapped;
     }
 
     @Override
     public void addTreeListener(TreeListener treeListener) throws RemoteException {
-        BlenderMonitor.checkNoswing();
-        wrapped.addTreeListener(treeListener);
+        wrapped.addTreeListener(monitor.wrapTreeListener(treeListener));
     }
 
     @Override
     public void removeTreeListener(TreeListener treeListener) throws RemoteException {
-        BlenderMonitor.checkNoswing();
-        wrapped.removeTreeListener(treeListener);
+        wrapped.removeTreeListener(monitor.wrapTreeListener(treeListener));
     }
 
     @Override
     public NodeSnapshot getSnapshot() throws RemoteException {
-        BlenderMonitor.checkNoswing();
-        NodeSnapshot nodeSnapshot = wrapped.getSnapshot();
-        wrapSnapshot(nodeSnapshot);
-        return nodeSnapshot;
+        return wrapSnapshot(monitor, wrapped.getSnapshot());
     }
 
     /**
      * Recursively wraps the nodes of the snapshot.
      */
-    private static void wrapSnapshot(NodeSnapshot snapshot) {
-        snapshot.setNode(BlenderNode.wrap(snapshot.getNode()));
-        for(NodeSnapshot child : snapshot.getChildren()) wrapSnapshot(child);
+    private static NodeSnapshot wrapSnapshot(final BlenderMonitor monitor, final NodeSnapshot snapshot) throws RemoteException {
+        List<NodeSnapshot> newChildren;
+        {
+            List<NodeSnapshot> children = snapshot.getChildren();
+            int size = children.size();
+            if(size==0) {
+                newChildren = Collections.emptyList();
+            } else if(size==1) {
+                newChildren = Collections.singletonList(wrapSnapshot(monitor, children.get(0)));
+            } else {
+                newChildren = new ArrayList<NodeSnapshot>(size);
+                for(NodeSnapshot child : children) {
+                    newChildren.add(wrapSnapshot(monitor, child));
+                }
+            }
+        }
+        return new NodeSnapshot(
+            monitor.wrapNode(snapshot.getNode(), snapshot.getUuid()),
+            newChildren,
+            snapshot.getAlertLevel(),
+            snapshot.getAlertMessage(),
+            snapshot.getAllowsChildren(),
+            snapshot.getId(),
+            snapshot.getLabel(),
+            snapshot.getUuid()
+        );
     }
 
     @Override
     public SortedSet<MonitoringPoint> getMonitoringPoints() throws RemoteException {
-        BlenderMonitor.checkNoswing();
         return wrapped.getMonitoringPoints();
     }
 }

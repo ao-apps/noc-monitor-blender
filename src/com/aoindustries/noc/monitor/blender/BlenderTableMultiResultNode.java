@@ -18,33 +18,28 @@ public class BlenderTableMultiResultNode<R extends TableMultiResult> extends Ble
 
     final private TableMultiResultNode<R> wrapped;
 
-    BlenderTableMultiResultNode(TableMultiResultNode<R> wrapped) {
-        super(wrapped);
-        BlenderMonitor.checkNoswing();
+    protected BlenderTableMultiResultNode(BlenderMonitor monitor, TableMultiResultNode<R> wrapped) {
+        super(monitor, wrapped);
         this.wrapped = wrapped;
     }
 
     @Override
     public void addTableMultiResultListener(TableMultiResultListener<? super R> tableMultiResultListener) throws RemoteException {
-        BlenderMonitor.checkNoswing();
-        wrapped.addTableMultiResultListener(tableMultiResultListener);
+        wrapped.addTableMultiResultListener(monitor.wrapTableMultiResultListener(tableMultiResultListener));
     }
 
     @Override
     public void removeTableMultiResultListener(TableMultiResultListener<? super R> tableMultiResultListener) throws RemoteException {
-        BlenderMonitor.checkNoswing();
-        wrapped.removeTableMultiResultListener(tableMultiResultListener);
+        wrapped.removeTableMultiResultListener(monitor.wrapTableMultiResultListener(tableMultiResultListener));
     }
 
     @Override
     public List<?> getColumnHeaders() throws RemoteException {
-        BlenderMonitor.checkNoswing();
         return wrapped.getColumnHeaders();
     }
 
     @Override
     public List<? extends R> getResults() throws RemoteException {
-        BlenderMonitor.checkNoswing();
         return wrapped.getResults();
     }
 }

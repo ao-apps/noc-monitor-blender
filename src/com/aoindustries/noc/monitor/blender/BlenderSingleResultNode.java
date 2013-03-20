@@ -17,27 +17,23 @@ public class BlenderSingleResultNode extends BlenderNode implements SingleResult
 
     final private SingleResultNode wrapped;
 
-    BlenderSingleResultNode(SingleResultNode wrapped) {
-        super(wrapped);
-        BlenderMonitor.checkNoswing();
+    protected BlenderSingleResultNode(BlenderMonitor monitor, SingleResultNode wrapped) {
+        super(monitor, wrapped);
         this.wrapped = wrapped;
     }
 
     @Override
     public void addSingleResultListener(SingleResultListener singleResultListener) throws RemoteException {
-        BlenderMonitor.checkNoswing();
-        wrapped.addSingleResultListener(singleResultListener);
+        wrapped.addSingleResultListener(monitor.wrapSingleResultListener(singleResultListener));
     }
 
     @Override
     public void removeSingleResultListener(SingleResultListener singleResultListener) throws RemoteException {
-        BlenderMonitor.checkNoswing();
-        wrapped.removeSingleResultListener(singleResultListener);
+        wrapped.removeSingleResultListener(monitor.wrapSingleResultListener(singleResultListener));
     }
 
     @Override
     public SingleResult getLastResult() throws RemoteException {
-        BlenderMonitor.checkNoswing();
         return wrapped.getLastResult();
     }
 }
