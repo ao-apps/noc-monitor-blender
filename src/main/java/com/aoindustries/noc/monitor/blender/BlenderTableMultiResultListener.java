@@ -1,5 +1,5 @@
 /*
- * Copyright 2012 by AO Industries, Inc.,
+ * Copyright 2012, 2020 by AO Industries, Inc.,
  * 7262 Bull Pen Cir, Mobile, Alabama, 36695, U.S.A.
  * All rights reserved.
  */
@@ -14,43 +14,43 @@ import java.rmi.RemoteException;
  */
 public class BlenderTableMultiResultListener<R extends TableMultiResult> implements TableMultiResultListener<R> {
 
-    final BlenderMonitor monitor;
-    final private TableMultiResultListener<R> wrapped;
+	final BlenderMonitor monitor;
+	final private TableMultiResultListener<R> wrapped;
 
-    protected BlenderTableMultiResultListener(BlenderMonitor monitor, TableMultiResultListener<R> wrapped) {
-        this.monitor = monitor;
-        this.wrapped = wrapped;
-    }
+	protected BlenderTableMultiResultListener(BlenderMonitor monitor, TableMultiResultListener<R> wrapped) {
+		this.monitor = monitor;
+		this.wrapped = wrapped;
+	}
 
-    @Override
-    public void tableMultiResultAdded(R multiTableResult) throws RemoteException {
-        wrapped.tableMultiResultAdded(multiTableResult);
-    }
+	@Override
+	public void tableMultiResultAdded(R multiTableResult) throws RemoteException {
+		wrapped.tableMultiResultAdded(multiTableResult);
+	}
 
-    @Override
-    public void tableMultiResultRemoved(R multiTableResult) throws RemoteException {
-        wrapped.tableMultiResultRemoved(multiTableResult);
-    }
+	@Override
+	public void tableMultiResultRemoved(R multiTableResult) throws RemoteException {
+		wrapped.tableMultiResultRemoved(multiTableResult);
+	}
 
-    @Override
-    public boolean equals(Object O) {
-        if(O==null) return false;
-        if(!(O instanceof TableMultiResultListener<?>)) return false;
+	@Override
+	public boolean equals(Object O) {
+		if(O==null) return false;
+		if(!(O instanceof TableMultiResultListener<?>)) return false;
 
-        // Unwrap this
-        TableMultiResultListener<?> thisTableMultiResultListener = BlenderTableMultiResultListener.this;
-        while(thisTableMultiResultListener instanceof BlenderTableMultiResultListener<?>) thisTableMultiResultListener = ((BlenderTableMultiResultListener<?>)thisTableMultiResultListener).wrapped;
+		// Unwrap this
+		TableMultiResultListener<?> thisTableMultiResultListener = BlenderTableMultiResultListener.this;
+		while(thisTableMultiResultListener instanceof BlenderTableMultiResultListener<?>) thisTableMultiResultListener = ((BlenderTableMultiResultListener<?>)thisTableMultiResultListener).wrapped;
 
-        // Unwrap other
-        TableMultiResultListener<?> otherTableMultiResultListener = (TableMultiResultListener<?>)O;
-        while(otherTableMultiResultListener instanceof BlenderTableMultiResultListener<?>) otherTableMultiResultListener = ((BlenderTableMultiResultListener<?>)otherTableMultiResultListener).wrapped;
+		// Unwrap other
+		TableMultiResultListener<?> otherTableMultiResultListener = (TableMultiResultListener<?>)O;
+		while(otherTableMultiResultListener instanceof BlenderTableMultiResultListener<?>) otherTableMultiResultListener = ((BlenderTableMultiResultListener<?>)otherTableMultiResultListener).wrapped;
 
-        // Check equals
-        return thisTableMultiResultListener.equals(otherTableMultiResultListener);
-    }
+		// Check equals
+		return thisTableMultiResultListener.equals(otherTableMultiResultListener);
+	}
 
-    @Override
-    public int hashCode() {
-        return wrapped.hashCode();
-    }
+	@Override
+	public int hashCode() {
+		return wrapped.hashCode();
+	}
 }
