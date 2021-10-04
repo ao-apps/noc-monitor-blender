@@ -1,6 +1,6 @@
 /*
  * noc-monitor-blender - Combines data from multiple monitoring points.
- * Copyright (C) 2012, 2020  AO Industries, Inc.
+ * Copyright (C) 2012, 2020, 2021  AO Industries, Inc.
  *     support@aoindustries.com
  *     7262 Bull Pen Cir
  *     Mobile, AL 36695
@@ -37,7 +37,7 @@ import java.util.SortedSet;
  */
 public class BlenderRootNode extends BlenderNode implements RootNode {
 
-	final private RootNode wrapped;
+	private final RootNode wrapped;
 
 	protected BlenderRootNode(BlenderMonitor monitor, RootNode wrapped) {
 		super(monitor, wrapped);

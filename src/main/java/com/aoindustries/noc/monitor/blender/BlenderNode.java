@@ -1,6 +1,6 @@
 /*
  * noc-monitor-blender - Combines data from multiple monitoring points.
- * Copyright (C) 2012, 2020  AO Industries, Inc.
+ * Copyright (C) 2012, 2020, 2021  AO Industries, Inc.
  *     support@aoindustries.com
  *     7262 Bull Pen Cir
  *     Mobile, AL 36695
@@ -37,8 +37,8 @@ import java.util.UUID;
 public class BlenderNode implements Node {
 
 	final BlenderMonitor monitor;
-	final private Node wrapped;
-	final private UUID uuid;
+	private final Node wrapped;
+	private final UUID uuid;
 
 	protected BlenderNode(BlenderMonitor monitor, Node wrapped) {
 		this.monitor = monitor;

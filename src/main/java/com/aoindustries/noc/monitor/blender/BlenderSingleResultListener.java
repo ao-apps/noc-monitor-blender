@@ -1,6 +1,6 @@
 /*
  * noc-monitor-blender - Combines data from multiple monitoring points.
- * Copyright (C) 2012, 2020  AO Industries, Inc.
+ * Copyright (C) 2012, 2020, 2021  AO Industries, Inc.
  *     support@aoindustries.com
  *     7262 Bull Pen Cir
  *     Mobile, AL 36695
@@ -32,7 +32,7 @@ import java.rmi.RemoteException;
 public class BlenderSingleResultListener implements SingleResultListener {
 
 	final BlenderMonitor monitor;
-	final private SingleResultListener wrapped;
+	private final SingleResultListener wrapped;
 
 	protected BlenderSingleResultListener(BlenderMonitor monitor, SingleResultListener wrapped) {
 		this.monitor = monitor;
