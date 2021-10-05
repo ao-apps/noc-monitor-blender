@@ -1,4 +1,4 @@
-# [<img src="ao-logo.png" alt="AO Logo" width="35" height="40">](https://github.com/aoindustries) [NOC](https://github.com/aoindustries/noc) / [Monitor](https://github.com/aoindustries/noc-monitor) / [Blender](https://github.com/aoindustries/noc-monitor-blender)
+# [<img src="ao-logo.png" alt="AO Logo" width="35" height="40">](https://github.com/ao-apps) [NOC](https://github.com/ao-apps/noc) / [Monitor](https://github.com/ao-apps/noc-monitor) / [Blender](https://github.com/ao-apps/noc-monitor-blender)
 
 [![project: alpha](https://aoindustries.com/ao-badges/project-alpha.svg)](https://aoindustries.com/life-cycle#project-alpha)
 [![management: preview](https://aoindustries.com/ao-badges/management-preview.svg)](https://aoindustries.com/life-cycle#management-preview)
@@ -14,7 +14,7 @@ Combines data from multiple monitoring points.
 * [Changelog](https://aoindustries.com/noc/monitor/blender/changelog)
 * [API Docs](https://aoindustries.com/noc/monitor/blender/apidocs/)
 * [Maven Central Repository](https://search.maven.org/artifact/com.aoindustries/noc-monitor-blender)
-* [GitHub](https://github.com/aoindustries/noc-monitor-blender)
+* [GitHub](https://github.com/ao-apps/noc-monitor-blender)
 
 ## Contact Us
 For questions or support, please [contact us](https://aoindustries.com/contact):
