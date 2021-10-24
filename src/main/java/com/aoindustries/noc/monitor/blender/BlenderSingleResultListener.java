@@ -45,16 +45,15 @@ public class BlenderSingleResultListener implements SingleResultListener {
 	}
 
 	@Override
-	public boolean equals(Object O) {
-		if(O==null) return false;
-		if(!(O instanceof SingleResultListener)) return false;
+	public boolean equals(Object obj) {
+		if(!(obj instanceof SingleResultListener)) return false;
 
 		// Unwrap this
 		SingleResultListener thisSingleResultListener = BlenderSingleResultListener.this;
 		while(thisSingleResultListener instanceof BlenderSingleResultListener) thisSingleResultListener = ((BlenderSingleResultListener)thisSingleResultListener).wrapped;
 
 		// Unwrap other
-		SingleResultListener otherSingleResultListener = (SingleResultListener)O;
+		SingleResultListener otherSingleResultListener = (SingleResultListener)obj;
 		while(otherSingleResultListener instanceof BlenderSingleResultListener) otherSingleResultListener = ((BlenderSingleResultListener)otherSingleResultListener).wrapped;
 
 		// Check equals

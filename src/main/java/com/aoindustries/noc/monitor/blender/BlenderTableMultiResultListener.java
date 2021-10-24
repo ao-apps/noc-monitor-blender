@@ -50,16 +50,15 @@ public class BlenderTableMultiResultListener<R extends TableMultiResult> impleme
 	}
 
 	@Override
-	public boolean equals(Object O) {
-		if(O==null) return false;
-		if(!(O instanceof TableMultiResultListener<?>)) return false;
+	public boolean equals(Object obj) {
+		if(!(obj instanceof TableMultiResultListener<?>)) return false;
 
 		// Unwrap this
 		TableMultiResultListener<?> thisTableMultiResultListener = BlenderTableMultiResultListener.this;
 		while(thisTableMultiResultListener instanceof BlenderTableMultiResultListener<?>) thisTableMultiResultListener = ((BlenderTableMultiResultListener<?>)thisTableMultiResultListener).wrapped;
 
 		// Unwrap other
-		TableMultiResultListener<?> otherTableMultiResultListener = (TableMultiResultListener<?>)O;
+		TableMultiResultListener<?> otherTableMultiResultListener = (TableMultiResultListener<?>)obj;
 		while(otherTableMultiResultListener instanceof BlenderTableMultiResultListener<?>) otherTableMultiResultListener = ((BlenderTableMultiResultListener<?>)otherTableMultiResultListener).wrapped;
 
 		// Check equals

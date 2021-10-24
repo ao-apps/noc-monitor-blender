@@ -65,16 +65,15 @@ public class BlenderTreeListener implements TreeListener {
 	}
 
 	@Override
-	public boolean equals(Object O) {
-		if(O==null) return false;
-		if(!(O instanceof TreeListener)) return false;
+	public boolean equals(Object obj) {
+		if(!(obj instanceof TreeListener)) return false;
 
 		// Unwrap this
 		TreeListener thisTreeListener = BlenderTreeListener.this;
 		while(thisTreeListener instanceof BlenderTreeListener) thisTreeListener = ((BlenderTreeListener)thisTreeListener).wrapped;
 
 		// Unwrap other
-		TreeListener otherTreeListener = (TreeListener)O;
+		TreeListener otherTreeListener = (TreeListener)obj;
 		while(otherTreeListener instanceof BlenderTreeListener) otherTreeListener = ((BlenderTreeListener)otherTreeListener).wrapped;
 
 		// Check equals
