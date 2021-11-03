@@ -56,7 +56,7 @@ public class BlenderNode implements Node {
 	public List<? extends BlenderNode> getChildren() throws RemoteException {
 		List<? extends Node> children = wrapped.getChildren();
 		// Wrap
-		List<BlenderNode> localWrapped = new ArrayList<BlenderNode>(children.size());
+		List<BlenderNode> localWrapped = new ArrayList<>(children.size());
 		for(Node child : children) {
 			localWrapped.add(monitor.wrapNode(child, child.getUuid()));
 		}
