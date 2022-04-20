@@ -45,44 +45,44 @@ import java.util.concurrent.TimeUnit;
  */
 public class BlenderMonitor implements Monitor {
 
-	private static final long DEFAULT_TIMEOUT = 15;
-	private static final TimeUnit DEFAULT_TIMEOUT_UNIT = TimeUnit.SECONDS;
+  private static final long DEFAULT_TIMEOUT = 15;
+  private static final TimeUnit DEFAULT_TIMEOUT_UNIT = TimeUnit.SECONDS;
 
-	private final List<Monitor> wrapped;
-	private final long timeout;
-	private final TimeUnit timeoutUnit;
+  private final List<Monitor> wrapped;
+  private final long timeout;
+  private final TimeUnit timeoutUnit;
 
-	// TODO: Create a way to stop monitors, and release the executor service when stopped.
-	private final ExecutorService executorService = ExecutorService.newInstance();
+  // TODO: Create a way to stop monitors, and release the executor service when stopped.
+  private final ExecutorService executorService = ExecutorService.newInstance();
 
-	/**
-	 * Wraps the provided monitors, uses the default timeout.
-	 */
-	public BlenderMonitor(Collection<Monitor> wrapped) {
-		this(wrapped, DEFAULT_TIMEOUT, DEFAULT_TIMEOUT_UNIT);
-	}
+  /**
+   * Wraps the provided monitors, uses the default timeout.
+   */
+  public BlenderMonitor(Collection<Monitor> wrapped) {
+    this(wrapped, DEFAULT_TIMEOUT, DEFAULT_TIMEOUT_UNIT);
+  }
 
-	/**
-	 * Wraps the provided monitors, uses the provided timeout.
-	 */
-	public BlenderMonitor(Collection<Monitor> wrapped, long timeout, TimeUnit timeoutUnit) {
-		this.wrapped = AoCollections.unmodifiableCopyList(wrapped);
-		this.timeout = timeout;
-		this.timeoutUnit = timeoutUnit;
-	}
+  /**
+   * Wraps the provided monitors, uses the provided timeout.
+   */
+  public BlenderMonitor(Collection<Monitor> wrapped, long timeout, TimeUnit timeoutUnit) {
+    this.wrapped = AoCollections.unmodifiableCopyList(wrapped);
+    this.timeout = timeout;
+    this.timeoutUnit = timeoutUnit;
+  }
 
-	/**
-	 * Gets the root node for the given locale, username, and password.  May
-	 * reuse existing root nodes.  Calls login on each of the wrapped monitors,
-	 * returning success if at least one of the wrapped root nodes is successful.
-	 *
-	 * When a root node fails initial login, it will still be connected to for
-	 * subsequent calls.
-	 */
-	@Override
-	public BlenderRootNode login(Locale locale, String username, String password) throws RemoteException, IOException, SQLException {
+  /**
+   * Gets the root node for the given locale, username, and password.  May
+   * reuse existing root nodes.  Calls login on each of the wrapped monitors,
+   * returning success if at least one of the wrapped root nodes is successful.
+   *
+   * When a root node fails initial login, it will still be connected to for
+   * subsequent calls.
+   */
+  @Override
+  public BlenderRootNode login(Locale locale, String username, String password) throws RemoteException, IOException, SQLException {
 
-		RootNode wrappedRootNode = getWrapped().login(locale, username, password);
-		return wrapRootNode(wrappedRootNode, wrappedRootNode.getUuid());
-	}
+    RootNode wrappedRootNode = getWrapped().login(locale, username, password);
+    return wrapRootNode(wrappedRootNode, wrappedRootNode.getUuid());
+  }
 }

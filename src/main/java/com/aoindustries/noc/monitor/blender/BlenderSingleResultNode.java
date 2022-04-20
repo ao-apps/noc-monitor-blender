@@ -33,25 +33,25 @@ import java.rmi.RemoteException;
  */
 public class BlenderSingleResultNode extends BlenderNode implements SingleResultNode {
 
-	private final SingleResultNode wrapped;
+  private final SingleResultNode wrapped;
 
-	protected BlenderSingleResultNode(BlenderMonitor monitor, SingleResultNode wrapped) {
-		super(monitor, wrapped);
-		this.wrapped = wrapped;
-	}
+  protected BlenderSingleResultNode(BlenderMonitor monitor, SingleResultNode wrapped) {
+    super(monitor, wrapped);
+    this.wrapped = wrapped;
+  }
 
-	@Override
-	public void addSingleResultListener(SingleResultListener singleResultListener) throws RemoteException {
-		wrapped.addSingleResultListener(monitor.wrapSingleResultListener(singleResultListener));
-	}
+  @Override
+  public void addSingleResultListener(SingleResultListener singleResultListener) throws RemoteException {
+    wrapped.addSingleResultListener(monitor.wrapSingleResultListener(singleResultListener));
+  }
 
-	@Override
-	public void removeSingleResultListener(SingleResultListener singleResultListener) throws RemoteException {
-		wrapped.removeSingleResultListener(monitor.wrapSingleResultListener(singleResultListener));
-	}
+  @Override
+  public void removeSingleResultListener(SingleResultListener singleResultListener) throws RemoteException {
+    wrapped.removeSingleResultListener(monitor.wrapSingleResultListener(singleResultListener));
+  }
 
-	@Override
-	public SingleResult getLastResult() throws RemoteException {
-		return wrapped.getLastResult();
-	}
+  @Override
+  public SingleResult getLastResult() throws RemoteException {
+    return wrapped.getLastResult();
+  }
 }

@@ -32,37 +32,39 @@ import java.rmi.RemoteException;
  */
 public class BlenderSingleResultListener implements SingleResultListener {
 
-	final BlenderMonitor monitor;
-	private final SingleResultListener wrapped;
+  final BlenderMonitor monitor;
+  private final SingleResultListener wrapped;
 
-	protected BlenderSingleResultListener(BlenderMonitor monitor, SingleResultListener wrapped) {
-		this.monitor = monitor;
-		this.wrapped = wrapped;
-	}
+  protected BlenderSingleResultListener(BlenderMonitor monitor, SingleResultListener wrapped) {
+    this.monitor = monitor;
+    this.wrapped = wrapped;
+  }
 
-	@Override
-	public void singleResultUpdated(SingleResult singleResult) throws RemoteException {
-		wrapped.singleResultUpdated(singleResult);
-	}
+  @Override
+  public void singleResultUpdated(SingleResult singleResult) throws RemoteException {
+    wrapped.singleResultUpdated(singleResult);
+  }
 
-	@Override
-	public boolean equals(Object obj) {
-		if(!(obj instanceof SingleResultListener)) return false;
+  @Override
+  public boolean equals(Object obj) {
+    if (!(obj instanceof SingleResultListener)) {
+      return false;
+    }
 
-		// Unwrap this
-		SingleResultListener thisSingleResultListener = BlenderSingleResultListener.this;
-		while(thisSingleResultListener instanceof BlenderSingleResultListener) thisSingleResultListener = ((BlenderSingleResultListener)thisSingleResultListener).wrapped;
+    // Unwrap this
+    SingleResultListener thisSingleResultListener = BlenderSingleResultListener.this;
+    while (thisSingleResultListener instanceof BlenderSingleResultListener) thisSingleResultListener = ((BlenderSingleResultListener)thisSingleResultListener).wrapped;
 
-		// Unwrap other
-		SingleResultListener otherSingleResultListener = (SingleResultListener)obj;
-		while(otherSingleResultListener instanceof BlenderSingleResultListener) otherSingleResultListener = ((BlenderSingleResultListener)otherSingleResultListener).wrapped;
+    // Unwrap other
+    SingleResultListener otherSingleResultListener = (SingleResultListener)obj;
+    while (otherSingleResultListener instanceof BlenderSingleResultListener) otherSingleResultListener = ((BlenderSingleResultListener)otherSingleResultListener).wrapped;
 
-		// Check equals
-		return thisSingleResultListener.equals(otherSingleResultListener);
-	}
+    // Check equals
+    return thisSingleResultListener.equals(otherSingleResultListener);
+  }
 
-	@Override
-	public int hashCode() {
-		return wrapped.hashCode();
-	}
+  @Override
+  public int hashCode() {
+    return wrapped.hashCode();
+  }
 }

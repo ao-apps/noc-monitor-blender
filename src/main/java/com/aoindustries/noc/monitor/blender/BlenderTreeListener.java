@@ -36,53 +36,55 @@ import java.util.List;
  */
 public class BlenderTreeListener implements TreeListener {
 
-	final BlenderMonitor monitor;
-	private final TreeListener wrapped;
+  final BlenderMonitor monitor;
+  private final TreeListener wrapped;
 
-	protected BlenderTreeListener(BlenderMonitor monitor, TreeListener wrapped) {
-		this.monitor = monitor;
-		this.wrapped = wrapped;
-	}
+  protected BlenderTreeListener(BlenderMonitor monitor, TreeListener wrapped) {
+    this.monitor = monitor;
+    this.wrapped = wrapped;
+  }
 
-	@Override
-	public void nodeAdded() throws RemoteException {
-		wrapped.nodeAdded();
-	}
+  @Override
+  public void nodeAdded() throws RemoteException {
+    wrapped.nodeAdded();
+  }
 
-	@Override
-	public void nodeRemoved() throws RemoteException {
-		wrapped.nodeRemoved();
-	}
+  @Override
+  public void nodeRemoved() throws RemoteException {
+    wrapped.nodeRemoved();
+  }
 
-	@Override
-	public void nodeAlertLevelChanged(List<AlertLevelChange> changes) throws RemoteException {
-		List<AlertLevelChange> wrappedChanges = new ArrayList<>(changes.size());
-		for(AlertLevelChange change : changes) {
-			Node node = change.getNode();
-			wrappedChanges.add(change.setNode(monitor.wrapNode(node, node.getUuid())));
-		}
-		wrappedChanges = Collections.unmodifiableList(wrappedChanges);
-		wrapped.nodeAlertLevelChanged(wrappedChanges);
-	}
+  @Override
+  public void nodeAlertLevelChanged(List<AlertLevelChange> changes) throws RemoteException {
+    List<AlertLevelChange> wrappedChanges = new ArrayList<>(changes.size());
+    for (AlertLevelChange change : changes) {
+      Node node = change.getNode();
+      wrappedChanges.add(change.setNode(monitor.wrapNode(node, node.getUuid())));
+    }
+    wrappedChanges = Collections.unmodifiableList(wrappedChanges);
+    wrapped.nodeAlertLevelChanged(wrappedChanges);
+  }
 
-	@Override
-	public boolean equals(Object obj) {
-		if(!(obj instanceof TreeListener)) return false;
+  @Override
+  public boolean equals(Object obj) {
+    if (!(obj instanceof TreeListener)) {
+      return false;
+    }
 
-		// Unwrap this
-		TreeListener thisTreeListener = BlenderTreeListener.this;
-		while(thisTreeListener instanceof BlenderTreeListener) thisTreeListener = ((BlenderTreeListener)thisTreeListener).wrapped;
+    // Unwrap this
+    TreeListener thisTreeListener = BlenderTreeListener.this;
+    while (thisTreeListener instanceof BlenderTreeListener) thisTreeListener = ((BlenderTreeListener)thisTreeListener).wrapped;
 
-		// Unwrap other
-		TreeListener otherTreeListener = (TreeListener)obj;
-		while(otherTreeListener instanceof BlenderTreeListener) otherTreeListener = ((BlenderTreeListener)otherTreeListener).wrapped;
+    // Unwrap other
+    TreeListener otherTreeListener = (TreeListener)obj;
+    while (otherTreeListener instanceof BlenderTreeListener) otherTreeListener = ((BlenderTreeListener)otherTreeListener).wrapped;
 
-		// Check equals
-		return thisTreeListener.equals(otherTreeListener);
-	}
+    // Check equals
+    return thisTreeListener.equals(otherTreeListener);
+  }
 
-	@Override
-	public int hashCode() {
-		return wrapped.hashCode();
-	}
+  @Override
+  public int hashCode() {
+    return wrapped.hashCode();
+  }
 }
