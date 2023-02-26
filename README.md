@@ -13,7 +13,7 @@ Combines data from multiple monitoring points.
 * [Project Home](https://aoindustries.com/noc/monitor/blender/)
 * [Changelog](https://aoindustries.com/noc/monitor/blender/changelog)
 * [API Docs](https://aoindustries.com/noc/monitor/blender/apidocs/)
-* [Maven Central Repository](https://search.maven.org/artifact/com.aoindustries/noc-monitor-blender)
+* [Maven Central Repository](https://central.sonatype.com/search?namespace=com.aoindustries&q=a%3Anoc-monitor-blender)
 * [GitHub](https://github.com/ao-apps/noc-monitor-blender)
 
 ## Contact Us
